@@ -1,7 +1,8 @@
 
 
 
-Teste Backend PHP – Versotech
+Teste Backend PHP – Versotech realizado por Marcel
+
 🛠 Ferramentas utilizadas
 Docker: para criar o ambiente isolado e rodar o Laravel sem depender de XAMPP.
 
@@ -50,6 +51,37 @@ Sair do container e reiniciar:
 exit
 docker-compose up -d
 
+
+## População das tabelas base
+
+O projeto já contém seeders para inserir os dados de exemplo nas tabelas `produtos_base` e `precos_base`.
+
+### Executar os seeders
+
+Dentro do container, rode:
+
+```bash
+php artisan db:seed --class=ProdutosBaseSeeder
+php artisan db:seed --class=PrecosBaseSeeder
+
+Isso irá inserir os 12 produtos e os 12 preços conforme o enunciado do teste.
+
+### 3. Testar direto no banco
+Depois de rodar os seeders, você pode verificar os dados:
+
+- Usando o **artisan tinker**:
+  ```bash
+  php artisan tinker
+  >>> DB::table('produtos_base')->get();
+  >>> DB::table('precos_base')->get();
+
+Ou direto no SQLite:
+sqlite3 database/database.sqlite
+sqlite> SELECT * FROM produtos_base;
+sqlite> SELECT * FROM precos_base;
+
+
+
 🌐 Endpoints da API
 Sincronizar produtos  
 POST /api/sincronizar/produtos
@@ -68,123 +100,3 @@ php artisan test
 
 
 
-
-# Teste Técnico – Desenvolvedor PHP Laravel
-
-## Objetivo
-
-Desenvolver uma aplicação backend responsável pelo processamento, transformação e sincronização de dados de produtos e preços, utilizando Views SQL para padronização das informações e disponibilizando os dados por meio de uma API REST.
-
----
-
-## Requisitos Técnicos
-
-Tecnologias obrigatórias:
-
-* PHP 8.0+
-* Laravel 11.0+
-* SQLite
-* Docker
-* Docker Compose
-
----
-
-## Restrições Obrigatórias
-
-O projeto deve:
-
-* Rodar integralmente via Docker.
-* Possuir arquivo `docker-compose.yml`.
-* Expor exclusivamente endpoints de API REST.
-* Conter testes automatizados.
-* Incluir instruções de execução no `README.md`.
-* Documentar os endpoints disponíveis.
-
-O projeto não deve:
-
-* Exigir instalação de dependências na máquina host além do Docker.
-* Conter qualquer tipo de interface web.
-
----
-
-## Modelagem de Banco de Dados
-
-### Tabelas de Origem
-
-Devem ser criadas duas tabelas base:
-
-* `produtos_base`
-* `precos_base`
-
-O script de criação das tabelas base encontra-se na raiz do projeto.
-
-### Tabelas de Destino
-
-Devem ser criadas duas tabelas para armazenamento dos dados processados:
-
-* `produto_insercao`
-* `preco_insercao`
-
-Considere modelagem adequada, chaves e índices quando necessário.
-
----
-
-## Processamento com Views SQL
-
-A transformação dos dados deve ser realizada obrigatoriamente por meio de Views SQL.
-
-Devem ser criadas:
-
-* Uma View para produtos.
-* Uma View para preços.
-
-As Views devem contemplar:
-
-* Normalização dos dados.
-* Processamento apenas de registros ativos.
-
----
-
-## Processo de Sincronização
-
-A sincronização deve:
-
-* Consumir os dados a partir das Views.
-* Inserir, atualizar ou remover registros nas tabelas de destino.
-* Evitar duplicidade.
-* Evitar operações desnecessárias.
-
----
-
-## API REST
-
-A aplicação deve disponibilizar os seguintes endpoints:
-
-### Sincronizar Produtos
-
-POST /api/sincronizar/produtos
-
-Executa o processo de transformação e sincronização dos dados de `produtos_base` para `produto_insercao`.
-
----
-
-### Sincronizar Preços
-
-POST /api/sincronizar/precos
-
-Executa o processo de transformação e sincronização dos dados de `precos_base` para `preco_insercao`.
-
----
-
-### Listar Produtos Sincronizados (Paginado)
-
-GET /api/produtos-precos
-
-Deve retornar os produtos processados com seus respectivos preços de forma paginada.
-A paginação deve aceitar parâmetros de controle via query string.
-
----
-
-## Como executar o projeto?
-
-{Esta seção deve ser preenchida pelo candidato com as instruções necessárias para execução da aplicação.}
