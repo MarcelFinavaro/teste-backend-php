@@ -80,6 +80,39 @@ sqlite3 database/database.sqlite
 sqlite> SELECT * FROM produtos_base;
 sqlite> SELECT * FROM precos_base;
 
+## Configuração do Banco de Dados
+
+### Recriar o banco de dados
+Para garantir que todas as tabelas sejam criadas corretamente, use:
+
+```bash
+php artisan migrate:fresh
+
+Esse comando apaga todas as tabelas existentes e recria o banco com base nas migrations em database/migrations.
+
+Popular as tabelas base
+Após recriar o banco, rode os seeders para inserir os dados iniciais:
+php artisan db:seed --class=ProdutosBaseSeeder
+php artisan db:seed --class=PrecosBaseSeeder
+
+Validar os dados com Tinker
+Abra o Tinker dentro do container:
+php artisan tinker
+
+E execute:
+DB::table('produtos_base')->count(); // esperado: 12
+DB::table('precos_base')->count();   // esperado: 12
+
+Para visualizar alguns registros:
+DB::table('produtos_base')->limit(3)->get();
+DB::table('precos_base')->limit(3)->get();
+
+Observação!
+Comandos Artisan (migrate, db:seed) devem ser executados fora do Tinker, diretamente no terminal do container.
+
+O Tinker é usado apenas para rodar código PHP e consultar os dados já inseridos.
+
+
 
 
 🌐 Endpoints da API
