@@ -190,6 +190,6 @@ Paginação	✅	Via query string
 Testes	✅	Estrutura de testes configurada
 
 👨‍💻 Autor
-
 Marcel Finavaro
+
 Desenvolvido como parte de teste técnico para vaga de Desenvolvedor para Implantação de Sistemas (PHP + SQL)
