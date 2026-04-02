@@ -165,30 +165,16 @@ docker exec -it laravel_app php artisan test
 
 📊 Estrutura do Projeto
 
-teste-backend-php/
-├── app/
-│ ├── Http/
-│ │ └── Controllers/
-│ │ └── SincronizacaoController.php
-│ ├── Models/
-│ │ ├── ProdutoBase.php
-│ │ ├── PrecoBase.php
-│ │ ├── ProdutoInsercao.php
-│ │ └── PrecoInsercao.php
-│ ├── database/
-│ │ ├── migrations/
-│ │ │ ├── [migrations das tabelas base]
-│ │ │ ├── [migrations das tabelas destino]
-│ │ │ └── [migrations das views SQL]
-│ │ └── seeders/
-│ │ ├── DatabaseSeeder.php
-│ │ ├── ProdutosBaseSeeder.php
-│ │ └── PrecosBaseSeeder.php
-│ ├── routes/
-│ │ └── api.php
-│ ├── docker-compose.yml
-│ ├── Dockerfile
-│ └── README.md
+| Caminho | Descrição |
+|---------|-----------|
+| `app/Http/Controllers/SincronizacaoController.php` | Controller principal da API |
+| `app/Models/` | Models das tabelas (ProdutoBase, PrecoBase, ProdutoInsercao, PrecoInsercao) |
+| `database/migrations/` | Migrations das tabelas base, destino e views SQL |
+| `database/seeders/` | Seeders com dados de exemplo |
+| `routes/api.php` | Rotas da API |
+| `docker-compose.yml` | Configuração Docker |
+| `Dockerfile` | Configuração da imagem Docker |
+| `README.md` | Documentação do projeto |
 
 🔍 Validação dos Requisitos
 Requisito	Status	Descrição
@@ -204,5 +190,6 @@ Paginação	✅	Via query string
 Testes	✅	Estrutura de testes configurada
 
 👨‍💻 Autor
+
 Marcel Finavaro
 Desenvolvido como parte de teste técnico para vaga de Desenvolvedor para Implantação de Sistemas (PHP + SQL)
