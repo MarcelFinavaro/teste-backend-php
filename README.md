@@ -50,7 +50,6 @@ API REST desenvolvida em Laravel 11 para processamento, transformação e sincro
 #### 1. Clone o repositório
 
 https://github.com/MarcelFinavaro/teste-backend-php.git
-
 observação: utilizar a branche "desenvolvimento" a branche main permanece o teste original. 
 
 2. Suba os containers Docker
@@ -168,27 +167,28 @@ docker exec -it laravel_app php artisan test
 
 teste-backend-php/
 ├── app/
-│   ├── Http/
-│   │   └── Controllers/
-│   │       └── SincronizacaoController.php
-│   └── Models/
-│       ├── ProdutoBase.php
-│       ├── PrecoBase.php
-│       ├── ProdutoInsercao.php
-│       └── PrecoInsercao.php
-├── database/
-│   ├── migrations/
-│   │   ├── [migrations das tabelas base e destino]
-│   │   └── [migrations das views SQL]
-│   └── seeders/
-│       ├── DatabaseSeeder.php
-│       ├── ProdutosBaseSeeder.php
-│       └── PrecosBaseSeeder.php
-├── routes/
-│   └── api.php
-├── docker-compose.yml
-├── Dockerfile
-└── README.md
+│ ├── Http/
+│ │ └── Controllers/
+│ │ └── SincronizacaoController.php
+│ ├── Models/
+│ │ ├── ProdutoBase.php
+│ │ ├── PrecoBase.php
+│ │ ├── ProdutoInsercao.php
+│ │ └── PrecoInsercao.php
+│ ├── database/
+│ │ ├── migrations/
+│ │ │ ├── [migrations das tabelas base]
+│ │ │ ├── [migrations das tabelas destino]
+│ │ │ └── [migrations das views SQL]
+│ │ └── seeders/
+│ │ ├── DatabaseSeeder.php
+│ │ ├── ProdutosBaseSeeder.php
+│ │ └── PrecosBaseSeeder.php
+│ ├── routes/
+│ │ └── api.php
+│ ├── docker-compose.yml
+│ ├── Dockerfile
+│ └── README.md
 
 🔍 Validação dos Requisitos
 Requisito	Status	Descrição
