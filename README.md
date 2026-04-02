@@ -51,7 +51,7 @@ API REST desenvolvida em Laravel 11 para processamento, transformação e sincro
 
 https://github.com/MarcelFinavaro/teste-backend-php.git
 
-observação: utilizar a branche "desenvolvimento" a branche main permanece igual 
+observação: utilizar a branche "desenvolvimento" a branche main permanece o teste original. 
 
 2. Suba os containers Docker
 docker-compose up -d
