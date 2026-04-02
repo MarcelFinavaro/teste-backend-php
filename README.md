@@ -48,9 +48,8 @@ API REST desenvolvida em Laravel 11 para processamento, transformação e sincro
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
 #### 1. Clone o repositório
-```bash
-git clone https://github.com/MarcelFinavaro/teste-backend-php.git
-cd teste-backend-php
+
+https://github.com/MarcelFinavaro/teste-backend-php.git
 
 observação: utilizar a branche "desenvolvimento" a branche main permanece igual 
 
@@ -135,6 +134,7 @@ page	int	1	Número da página
 categoria	string	-	Filtro por categoria
 preco_min	float	-	Preço mínimo
 preco_max	float	-	Preço máximo
+
 Resposta de sucesso:
 
 {
