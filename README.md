@@ -1,135 +1,208 @@
+# Teste Técnico – Desenvolvedor PHP Laravel
 
+## 📋 Sobre o Projeto
 
+API REST desenvolvida em Laravel 11 para processamento, transformação e sincronização de dados de produtos e preços, utilizando Views SQL para padronização das informações.
 
-Teste Backend PHP – Versotech realizado por Marcel
+### 🎯 Funcionalidades
 
-🛠 Ferramentas utilizadas
-Docker: para criar o ambiente isolado e rodar o Laravel sem depender de XAMPP.
+- Sincronização de produtos da tabela base para tabela de destino
+- Sincronização de preços da tabela base para tabela de destino
+- Listagem paginada de produtos com seus respectivos preços
+- Processamento via Views SQL com normalização de dados
+- Filtros por categoria e faixa de preço
 
-Docker Compose: para orquestrar o container da aplicação.
+## 🛠️ Tecnologias Utilizadas
 
-PHP 8.2: versão utilizada no container.
+- **PHP 8.2**
+- **Laravel 11**
+- **SQLite**
+- **Docker**
+- **Docker Compose**
 
-Composer: para instalar dependências do Laravel.
+## 📦 Estrutura do Banco de Dados
 
-SQLite: banco de dados utilizado, simples e compatível com o teste.
+### Tabelas Base (Origem)
+| Tabela | Descrição |
+|--------|-----------|
+| `produtos_base` | Dados brutos dos produtos |
+| `precos_base` | Dados brutos dos preços |
 
-Laravel: framework PHP para construção da API.
+### Tabelas de Destino
+| Tabela | Descrição |
+|--------|-----------|
+| `produto_insercao` | Produtos processados e sincronizados |
+| `preco_insercao` | Preços processados e sincronizados |
 
-🚀 Como rodar o projeto
+### Views SQL
+| View | Descrição |
+|------|-----------|
+| `view_produtos` | Produtos normalizados (apenas ativos) |
+| `view_precos` | Preços normalizados (apenas ativos com valores válidos) |
 
-1. Clonar o repositório
-git clone -b desenvolvimento https://github.com/MarcelFinavaro/teste-backend-php.git .
+## 🚀 Como Executar o Projeto
 
+### Pré-requisitos
 
-2. Subir os containers
-Na raiz do projeto:
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+#### 1. Clone o repositório
+```bash
+git clone https://github.com/MarcelFinavaro/teste-backend-php.git
+cd teste-backend-php
+
+observação: utilizar a branche "desenvolvimento" a branche main permanece igual 
+
+2. Suba os containers Docker
 docker-compose up -d
 
-3. Instalar dependências
-Entrar no container:
-docker-compose run app bash
+3. Acesse o container
+docker exec -it laravel_app bash
+
+4. Instale as dependências do Composer
 composer install
 
-4. Configurar ambiente
-Copiar o arquivo de exemplo:
+5. Configure o ambiente
+
 cp .env.example .env
-
-Editar .env para usar SQLite:
-DB_CONNECTION=sqlite
-DB_DATABASE=/var/www/html/database/database.sqlite
-
-Criar o arquivo do banco:
-touch database/database.sqlite
-
-5. Inicializar aplicação
-Dentro do container:
 php artisan key:generate
+
+6. Execute as migrations e seeders
 php artisan migrate
+php artisan db:seed
 
-Sair do container e reiniciar:
-exit
-docker-compose up -d
+7. Inicie o servidor
+php artisan serve --host=0.0.0.0 --port=8000
 
+8. Acesse a API
+A API estará disponível em: http://localhost:8000/api
 
-## População das tabelas base
+🧪 Testando a API
+Você pode testar os endpoints utilizando curl ou ferramentas como Postman/Insomnia.
 
-O projeto já contém seeders para inserir os dados de exemplo nas tabelas `produtos_base` e `precos_base`.
+# Teste de conexão
+curl http://localhost:8000/api/hello
 
-### Executar os seeders
+# Sincronizar produtos
+curl -X POST http://localhost:8000/api/sincronizar/produtos
 
-Dentro do container, rode:
+# Sincronizar preços
+curl -X POST http://localhost:8000/api/sincronizar/precos
 
-```bash
-php artisan db:seed --class=ProdutosBaseSeeder
-php artisan db:seed --class=PrecosBaseSeeder
+# Listar produtos com preços (paginado)
+curl "http://localhost:8000/api/produtos-precos?per_page=10&page=1"
 
-Isso irá inserir os 12 produtos e os 12 preços conforme o enunciado do teste.
+# Com filtros
+curl "http://localhost:8000/api/produtos-precos?categoria=COMPONENTES&preco_min=500&preco_max=2000"
 
-### 3. Testar direto no banco
-Depois de rodar os seeders, você pode verificar os dados:
-
-- Usando o **artisan tinker**:
-  ```bash
-  php artisan tinker
-  >>> DB::table('produtos_base')->get();
-  >>> DB::table('precos_base')->get();
-
-Ou direto no SQLite:
-sqlite3 database/database.sqlite
-sqlite> SELECT * FROM produtos_base;
-sqlite> SELECT * FROM precos_base;
-
-## Configuração do Banco de Dados
-
-### Recriar o banco de dados
-Para garantir que todas as tabelas sejam criadas corretamente, use:
-
-```bash
-php artisan migrate:fresh
-
-Esse comando apaga todas as tabelas existentes e recria o banco com base nas migrations em database/migrations.
-
-Popular as tabelas base
-Após recriar o banco, rode os seeders para inserir os dados iniciais:
-php artisan db:seed --class=ProdutosBaseSeeder
-php artisan db:seed --class=PrecosBaseSeeder
-
-Validar os dados com Tinker
-Abra o Tinker dentro do container:
-php artisan tinker
-
-E execute:
-DB::table('produtos_base')->count(); // esperado: 12
-DB::table('precos_base')->count();   // esperado: 12
-
-Para visualizar alguns registros:
-DB::table('produtos_base')->limit(3)->get();
-DB::table('precos_base')->limit(3)->get();
-
-Observação!
-Comandos Artisan (migrate, db:seed) devem ser executados fora do Tinker, diretamente no terminal do container.
-
-O Tinker é usado apenas para rodar código PHP e consultar os dados já inseridos.
-
-
-
-
-🌐 Endpoints da API
-Sincronizar produtos  
+📚 Documentação da API
+Endpoints
+1. Sincronizar Produtos
 POST /api/sincronizar/produtos
 
-Sincronizar preços  
+Executa a sincronização dos produtos da tabela base para a tabela de destino.
+
+Resposta de sucesso:
+{
+    "success": true,
+    "message": "Produtos sincronizados com sucesso",
+    "total_processados": 20
+}
+
+2. Sincronizar Preços
 POST /api/sincronizar/precos
 
-Listar produtos com preços (paginado)  
-GET /api/produtos-precos?page=1&per_page=10
+Executa a sincronização dos preços da tabela base para a tabela de destino.
 
+Resposta de sucesso:
+{
+    "success": true,
+    "message": "Preços sincronizados com sucesso",
+    "total_processados": 20
+}
 
-✅ Testes
-Rodar os testes automatizados dentro do container:
-php artisan test
+3. Listar Produtos com Preços
+GET /api/produtos-precos
 
+Retorna lista paginada de produtos com seus respectivos preços.
 
+Parâmetros (query string):
 
+Parâmetro	Tipo	Default	Descrição
+per_page	int	15	Número de itens por página
+page	int	1	Número da página
+categoria	string	-	Filtro por categoria
+preco_min	float	-	Preço mínimo
+preco_max	float	-	Preço máximo
+Resposta de sucesso:
 
+{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "codigo": "PRD001",
+            "nome": "Teclado Mecânico RGB",
+            "categoria": "PERIFERICOS",
+            "descricao": "Teclado com iluminação RGB e switches azuis",
+            "preco": 499.9,
+            "moeda": "BRL"
+        }
+    ],
+    "pagination": {
+        "current_page": 1,
+        "last_page": 2,
+        "per_page": 10,
+        "total": 20,
+        "from": 1,
+        "to": 10
+    }
+}
+
+🧪 Testes Automatizados
+Para executar os testes:
+docker exec -it laravel_app php artisan test
+
+📊 Estrutura do Projeto
+
+teste-backend-php/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       └── SincronizacaoController.php
+│   └── Models/
+│       ├── ProdutoBase.php
+│       ├── PrecoBase.php
+│       ├── ProdutoInsercao.php
+│       └── PrecoInsercao.php
+├── database/
+│   ├── migrations/
+│   │   ├── [migrations das tabelas base e destino]
+│   │   └── [migrations das views SQL]
+│   └── seeders/
+│       ├── DatabaseSeeder.php
+│       ├── ProdutosBaseSeeder.php
+│       └── PrecosBaseSeeder.php
+├── routes/
+│   └── api.php
+├── docker-compose.yml
+├── Dockerfile
+└── README.md
+
+🔍 Validação dos Requisitos
+Requisito	Status	Descrição
+PHP 8.0+	✅	PHP 8.2
+Laravel 11.0+	✅	Laravel 11
+SQLite	✅	Banco de dados SQLite
+Docker	✅	Container configurado
+Docker Compose	✅	docker-compose.yml
+API REST	✅	Endpoints exclusivamente REST
+Views SQL	✅	view_produtos e view_precos
+Sincronização	✅	Sem duplicidade, apenas ativos
+Paginação	✅	Via query string
+Testes	✅	Estrutura de testes configurada
+
+👨‍💻 Autor
+Marcel Finavaro
+Desenvolvido como parte de teste técnico para vaga de Desenvolvedor para Implantação de Sistemas (PHP + SQL)
